@@ -16,7 +16,7 @@ T const& min_wrong(T const& a, T const& b, Comparator cmp) {
 }
 
 template <typename T, StrictWeakOrdering Cmp>
-	requires Same<ArgumentType<Cmp>, T>()
+	requires( Signature<Cmp, bool(T,T)>() )
 T const& min(T const& a, T const& b, Cmp cmp) {
 	if (cmp(a, b)) return a;
 	return b;

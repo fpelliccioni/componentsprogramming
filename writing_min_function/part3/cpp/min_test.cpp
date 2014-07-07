@@ -1,10 +1,3 @@
-// clang++ -O3 -std=c++1y min_test.cpp
-// /Users/gordo/soft/llvm-build-release/Release+Asserts/bin/clang++ -O3 -std=c++1y -stdlib=libc++ -nostdinc++ -I/Users/gordo/soft/libcxx/include min_test.cpp
-// g++ -O3 -std=c++11 min_test.cpp
-
-// With linker optimization to strip the binary (not used code removal)
-// /Users/gordo/soft/llvm-build-release/Release+Asserts/bin/clang++ -O3 -std=c++1y -Wl,-dead_strip -stdlib=libc++ -nostdinc++ -I/Users/gordo/soft/libcxx/include min_test.cpp
-
 #include <iostream>
 #include <string>
 
@@ -65,65 +58,27 @@ void usage_with_employees_and_predicates() {
     employee m = min(e1, e2);
     std::cout << m.name << std::endl;
      
-    employee m2 = min_wrong(e1, e2, salary_comparator{});
+    employee m2 = min(e1, e2, salary_comparator{});
     std::cout << m2.name << std::endl; 
 
-    employee m3 = min_wrong(e1, e2, [](employee const& a, employee const& b){
+    employee m3 = min(e1, e2, [](employee const& a, employee const& b){
               return a.name < b.name; } );
     std::cout << m3.name << std::endl;
+
+    employee m4 = min(e1, e2, [](auto const& a, auto const& b){
+              return a.name < b.name; } );
+    std::cout << m4.name << std::endl;
+
 }
 
 // -----------------------------------
 
-#include "function_traits.hpp"
-
-struct poly 
-{
-    template <typename T>
-    bool operator()( T const& x )
-    {
-        return x;
-    }
-};
-
-
-void test_poly() {
-
-    poly p{};
-
-    using my_type1 = ArgumentType<salary_comparator>;
-    static_assert(SameType<employee, my_type1>(), "err");    
-
-
-    using my_type2 = ArgumentType<poly>;
-    // static_assert(SameType<employee, my_type1>(), "err");    
-
-}
 
 int main(int argc, char const *argv[])
 {
-    test_poly();
-
-    // auto lambda = [](int i, double d) { return long(i*10); };
-    // typedef function_traits<decltype(lambda)> traits;
-
-    // // static_assert(std::is_same<long, traits::result_type>::value, "err");
-    // // static_assert(std::is_same<int, traits::arg<0>::type>::value, "err");
-    // // static_assert(std::is_same<double, traits::arg<1>::type>::value, "err");
-
-    // static_assert(SameType<long, traits::result_type>(), "err");
-    // static_assert(SameType<int, traits::arg<0>::type>(), "err");
-    // static_assert(SameType<double, traits::arg<1>::type>(), "err");
-
-
-
-    // static_assert(SameType<employee, ArgumentType<salary_comparator>>(), "err");
-
-
-
-	// usage_with_builtin_types_simple_1();
-	// usage_with_employees1();
-	// usage_with_employees_and_predicates();
+	usage_with_builtin_types_simple_1();
+	usage_with_employees1();
+	usage_with_employees_and_predicates();
 
 	return 0;
 }
