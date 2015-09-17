@@ -15,15 +15,23 @@ public class PalindromeTests {
 
     public static boolean isPalindromeO(String str) {
         int n = str.length();
-//        int bound = n / 2;
-//        int bound = n >> 1;
 
         for (int i = 0; i < n/2; ++i) {
-//        for (int i = 0; i < bound; ++i) {
             if (str.charAt(i) != str.charAt(n-i-1)) return false;
         }
         return true;
     }
+
+//    public static boolean isPalindromeO(String str) {
+//        int first = 0;
+//        int last = str.length();
+//
+//        while ((first != last) && (first != --last)) {
+//            if (str.charAt(first) != str.charAt(last)) return false;
+//            ++first;
+//        }
+//        return true;
+//    }
 
 //    public static <T>  boolean isPalindromeU(T[] arr, int first, int last) {
     public static boolean isPalindromeU(char[] arr, int first, int last) {
@@ -39,6 +47,21 @@ public class PalindromeTests {
 
     public static boolean isPalindromeU(String str) {
         return isPalindromeU(str.toCharArray(), 0, str.length());
+    }
+
+    public static boolean isPalindromeX(String str, int first, int last) {
+        //precondition: [first, last) is a valid range over the internal array of str
+
+        while ((first != last) && (first != --last)) {
+            if (str.charAt(first) != str.charAt(last)) return false;
+            ++first;
+        }
+
+        return true;
+    }
+
+    public static boolean isPalindromeX(String str) {
+        return isPalindromeX(str, 0, str.length());
     }
 
 
@@ -97,7 +120,6 @@ public class PalindromeTests {
 
         return res;
     }
-
 
     public static int numberOfPalindromesU(String str) {
         int res = 0;

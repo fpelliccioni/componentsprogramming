@@ -1,6 +1,7 @@
 package com.componentsprogramming;
 import java.io.*;
 import java.util.*;
+import java.util.function.Function;
 
 
 import static com.componentsprogramming.PalindromeTests.*;
@@ -152,7 +153,9 @@ public class Main {
     }
 
 
-    public static void testPerformanceIsPalindromeI(ArrayList<String> words, int max) {
+    //-----------------
+
+    public static void testPerformanceIsPalindrome(String testName, Function<String, Boolean> isPalindrome, ArrayList<String> words, int max) {
         long palindromeCount = 0;
         long totalLocalElapsedTime = 0;
 
@@ -174,7 +177,7 @@ public class Main {
 //                String localWord = cloneString(word);
 
                 long localStartTime = System.nanoTime();
-                if (isPalindromeI(word)) {
+                if (isPalindrome.apply(word)) {
                     ++palindromeCount;
                 }
                 long localElapsedTime = System.nanoTime() - localStartTime;
@@ -184,57 +187,133 @@ public class Main {
         long globalElapsedTime = System.nanoTime() - globalStartTime;
 
         System.out.println("palindromeCount: " + palindromeCount);
-        System.out.println("testPerformanceIsPalindromeI globalElapsedTime:     " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
-        System.out.println("testPerformanceIsPalindromeI totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double)totalLocalElapsedTime / 1000000000.0) + " secs.");
+        System.out.println(testName + " globalElapsedTime:     " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+        System.out.println(testName + " totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double)totalLocalElapsedTime / 1000000000.0) + " secs.");
+    }
+
+    public static void testPerformanceIsPalindromeI(ArrayList<String> words, int max) {
+        testPerformanceIsPalindrome("testPerformanceIsPalindromeI", x -> isPalindromeI(x), words, max);
     }
 
     public static void testPerformanceIsPalindromeN(ArrayList<String> words, int max) {
-        long palindromeCount = 0;
-        long totalLocalElapsedTime = 0;
-
-
-//        ArrayList<String> localWords = new ArrayList<>();
-//        for (String word : words) {
-//            String clone = new String(word);
-//            localWords.add(clone);
-////            localWords.add(word);
-//        }
-
-        ArrayList<String> localWords = words;
-
-        long globalStartTime = System.nanoTime();
-
-        for (int i = 0; i < max; ++i) {
-
-            for (String word : localWords) {
-//                String localWord = cloneString(word);
-
-                long localStartTime = System.nanoTime();
-                if (isPalindromeN(word)) {
-                    ++palindromeCount;
-                }
-                long localElapsedTime = System.nanoTime() - localStartTime;
-                totalLocalElapsedTime += localElapsedTime;
-            }
-        }
-        long globalElapsedTime = System.nanoTime() - globalStartTime;
-
-        System.out.println("palindromeCount: " + palindromeCount);
-        System.out.println("testPerformanceIsPalindromeN globalElapsedTime:     " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
-        System.out.println("testPerformanceIsPalindromeN totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double)totalLocalElapsedTime / 1000000000.0) + " secs.");
+        testPerformanceIsPalindrome("testPerformanceIsPalindromeN", x -> isPalindromeN(x), words, max);
     }
 
     public static void testPerformanceIsPalindromeO(ArrayList<String> words, int max) {
+        testPerformanceIsPalindrome("testPerformanceIsPalindromeO", x -> isPalindromeO(x), words, max);
+    }
+
+//    public static void testPerformanceIsPalindromeI(ArrayList<String> words, int max) {
+//        long palindromeCount = 0;
+//        long totalLocalElapsedTime = 0;
+//
+//
+////        ArrayList<String> localWords = new ArrayList<>();
+////        for (String word : words) {
+////            String clone = new String(word);
+////            localWords.add(clone);
+//////            localWords.add(word);
+////        }
+//
+//        ArrayList<String> localWords = words;
+//
+//        long globalStartTime = System.nanoTime();
+//
+//        for (int i = 0; i < max; ++i) {
+//
+//            for (String word : localWords) {
+////                String localWord = cloneString(word);
+//
+//                long localStartTime = System.nanoTime();
+//                if (isPalindromeI(word)) {
+//                    ++palindromeCount;
+//                }
+//                long localElapsedTime = System.nanoTime() - localStartTime;
+//                totalLocalElapsedTime += localElapsedTime;
+//            }
+//        }
+//        long globalElapsedTime = System.nanoTime() - globalStartTime;
+//
+//        System.out.println("palindromeCount: " + palindromeCount);
+//        System.out.println("testPerformanceIsPalindromeI globalElapsedTime:     " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+//        System.out.println("testPerformanceIsPalindromeI totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double)totalLocalElapsedTime / 1000000000.0) + " secs.");
+//    }
+//
+//    public static void testPerformanceIsPalindromeN(ArrayList<String> words, int max) {
+//        long palindromeCount = 0;
+//        long totalLocalElapsedTime = 0;
+//
+//
+////        ArrayList<String> localWords = new ArrayList<>();
+////        for (String word : words) {
+////            String clone = new String(word);
+////            localWords.add(clone);
+//////            localWords.add(word);
+////        }
+//
+//        ArrayList<String> localWords = words;
+//
+//        long globalStartTime = System.nanoTime();
+//
+//        for (int i = 0; i < max; ++i) {
+//
+//            for (String word : localWords) {
+////                String localWord = cloneString(word);
+//
+//                long localStartTime = System.nanoTime();
+//                if (isPalindromeN(word)) {
+//                    ++palindromeCount;
+//                }
+//                long localElapsedTime = System.nanoTime() - localStartTime;
+//                totalLocalElapsedTime += localElapsedTime;
+//            }
+//        }
+//        long globalElapsedTime = System.nanoTime() - globalStartTime;
+//
+//        System.out.println("palindromeCount: " + palindromeCount);
+//        System.out.println("testPerformanceIsPalindromeN globalElapsedTime:     " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+//        System.out.println("testPerformanceIsPalindromeN totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double)totalLocalElapsedTime / 1000000000.0) + " secs.");
+//    }
+//
+//    public static void testPerformanceIsPalindromeO(ArrayList<String> words, int max) {
+//        long palindromeCount = 0;
+//        long totalLocalElapsedTime = 0;
+//
+//
+////        ArrayList<String> localWords = new ArrayList<>();
+////        for (String word : words) {
+////            String clone = new String(word);
+////            localWords.add(clone);
+//////            localWords.add(word);
+////        }
+//
+//        ArrayList<String> localWords = words;
+//
+//        long globalStartTime = System.nanoTime();
+//
+//        for (int i = 0; i < max; ++i) {
+//
+//            for (String word : localWords) {
+////                String localWord = cloneString(word);
+//
+//                long localStartTime = System.nanoTime();
+//                if (isPalindromeO(word)) {
+//                    ++palindromeCount;
+//                }
+//                long localElapsedTime = System.nanoTime() - localStartTime;
+//                totalLocalElapsedTime += localElapsedTime;
+//            }
+//        }
+//        long globalElapsedTime = System.nanoTime() - globalStartTime;
+//
+//        System.out.println("palindromeCount: " + palindromeCount);
+//        System.out.println("testPerformanceIsPalindromeO globalElapsedTime:     " + globalElapsedTime + " ns - " + ((double) globalElapsedTime / 1000000000.0) + " secs.");
+//        System.out.println("testPerformanceIsPalindromeO totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double) totalLocalElapsedTime / 1000000000.0) + " secs.");
+//    }
+
+    public static void testPerformanceIsPalindromeU(ArrayList<String> words, int max) {
         long palindromeCount = 0;
         long totalLocalElapsedTime = 0;
-
-
-//        ArrayList<String> localWords = new ArrayList<>();
-//        for (String word : words) {
-//            String clone = new String(word);
-//            localWords.add(clone);
-////            localWords.add(word);
-//        }
 
         ArrayList<String> localWords = words;
 
@@ -243,10 +322,10 @@ public class Main {
         for (int i = 0; i < max; ++i) {
 
             for (String word : localWords) {
-//                String localWord = cloneString(word);
-
+                char[] arr = word.toCharArray();
                 long localStartTime = System.nanoTime();
-                if (isPalindromeO(word)) {
+//                if (isPalindromeU(word)) {
+                if (isPalindromeU(arr, 0, word.length())) {
                     ++palindromeCount;
                 }
                 long localElapsedTime = System.nanoTime() - localStartTime;
@@ -256,61 +335,119 @@ public class Main {
         long globalElapsedTime = System.nanoTime() - globalStartTime;
 
         System.out.println("palindromeCount: " + palindromeCount);
-        System.out.println("testPerformanceIsPalindromeO globalElapsedTime:     " + globalElapsedTime + " ns - " + ((double) globalElapsedTime / 1000000000.0) + " secs.");
-        System.out.println("testPerformanceIsPalindromeO totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double) totalLocalElapsedTime / 1000000000.0) + " secs.");
+        System.out.println("testPerformanceIsPalindromeU globalElapsedTime:     " + globalElapsedTime + " ns - " + ((double) globalElapsedTime / 1000000000.0) + " secs.");
+        System.out.println("testPerformanceIsPalindromeU totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double) totalLocalElapsedTime / 1000000000.0) + " secs.");
     }
 
-
-
-    public static void testPerformanceNumberOfPalindromesN(String str, int max) {
+    public static void testPerformanceIsPalindromeX(ArrayList<String> words, int max) {
         long palindromeCount = 0;
+        long totalLocalElapsedTime = 0;
+
+        ArrayList<String> localWords = words;
+
         long globalStartTime = System.nanoTime();
+
         for (int i = 0; i < max; ++i) {
-            palindromeCount += numberOfPalindromesN(str);
+
+            for (String word : localWords) {
+                long localStartTime = System.nanoTime();
+                if (isPalindromeX(word, 0, word.length())) {
+                    ++palindromeCount;
+                }
+                long localElapsedTime = System.nanoTime() - localStartTime;
+                totalLocalElapsedTime += localElapsedTime;
+            }
         }
         long globalElapsedTime = System.nanoTime() - globalStartTime;
 
         System.out.println("palindromeCount: " + palindromeCount);
-        System.out.println("testPerformanceNumberOfPalindromesN: " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+        System.out.println("testPerformanceIsPalindromeX globalElapsedTime:     " + globalElapsedTime +     " ns - " + ((double) globalElapsedTime / 1000000000.0) + " secs.");
+        System.out.println("testPerformanceIsPalindromeX totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double) totalLocalElapsedTime / 1000000000.0) + " secs.");
+    }
+
+
+    //-----------------
+
+
+    public static void testPerformanceNumberOfPalindromes(String testName, Function<String, Integer> numberOfPalindromes, String str, int max) {
+        long palindromeCount = 0;
+        long globalStartTime = System.nanoTime();
+        for (int i = 0; i < max; ++i) {
+            palindromeCount += numberOfPalindromes.apply(str);
+        }
+        long globalElapsedTime = System.nanoTime() - globalStartTime;
+
+        System.out.println("palindromeCount: " + palindromeCount);
+        System.out.println(testName + ": " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+    }
+
+
+//    public static void testPerformanceNumberOfPalindromesN(String str, int max) {
+//        long palindromeCount = 0;
+//        long globalStartTime = System.nanoTime();
+//        for (int i = 0; i < max; ++i) {
+//            palindromeCount += numberOfPalindromesN(str);
+//        }
+//        long globalElapsedTime = System.nanoTime() - globalStartTime;
+//
+//        System.out.println("palindromeCount: " + palindromeCount);
+//        System.out.println("testPerformanceNumberOfPalindromesN: " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+//    }
+//
+//    public static void testPerformanceNumberOfPalindromesO(String str, int max) {
+//        long palindromeCount = 0;
+//        long globalStartTime = System.nanoTime();
+//        for (int i = 0; i < max; ++i) {
+//            palindromeCount += numberOfPalindromesO(str);
+//        }
+//        long globalElapsedTime = System.nanoTime() - globalStartTime;
+//
+//        System.out.println("palindromeCount: " + palindromeCount);
+//        System.out.println("testPerformanceNumberOfPalindromesO: " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+//    }
+//
+//    public static void testPerformanceNumberOfPalindromesI(String str, int max) {
+//        long palindromeCount = 0;
+//        long globalStartTime = System.nanoTime();
+//        for (int i = 0; i < max; ++i) {
+//            palindromeCount += numberOfPalindromesI(str);
+//        }
+//        long globalElapsedTime = System.nanoTime() - globalStartTime;
+//
+//        System.out.println("palindromeCount: " + palindromeCount);
+//        System.out.println("testPerformanceNumberOfPalindromesI: " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+//    }
+//
+//    public static void testPerformanceNumberOfPalindromesU(String str, int max) {
+//        long palindromeCount = 0;
+//        long globalStartTime = System.nanoTime();
+//        for (int i = 0; i < max; ++i) {
+//            palindromeCount += numberOfPalindromesU(str);
+//        }
+//        long globalElapsedTime = System.nanoTime() - globalStartTime;
+//
+//        System.out.println("palindromeCount: " + palindromeCount);
+//        System.out.println("testPerformanceNumberOfPalindromesU: " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+//    }
+
+    public static void testPerformanceNumberOfPalindromesN(String str, int max) {
+        testPerformanceNumberOfPalindromes("testPerformanceNumberOfPalindromesN", x -> numberOfPalindromesN(x), str, max);
     }
 
     public static void testPerformanceNumberOfPalindromesO(String str, int max) {
-        long palindromeCount = 0;
-        long globalStartTime = System.nanoTime();
-        for (int i = 0; i < max; ++i) {
-            palindromeCount += numberOfPalindromesO(str);
-        }
-        long globalElapsedTime = System.nanoTime() - globalStartTime;
-
-        System.out.println("palindromeCount: " + palindromeCount);
-        System.out.println("testPerformanceNumberOfPalindromesO: " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+        testPerformanceNumberOfPalindromes("testPerformanceNumberOfPalindromesO", x -> numberOfPalindromesO(x), str, max);
     }
 
     public static void testPerformanceNumberOfPalindromesI(String str, int max) {
-        long palindromeCount = 0;
-        long globalStartTime = System.nanoTime();
-        for (int i = 0; i < max; ++i) {
-            palindromeCount += numberOfPalindromesI(str);
-        }
-        long globalElapsedTime = System.nanoTime() - globalStartTime;
-
-        System.out.println("palindromeCount: " + palindromeCount);
-        System.out.println("testPerformanceNumberOfPalindromesI: " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+        testPerformanceNumberOfPalindromes("testPerformanceNumberOfPalindromesI", x -> numberOfPalindromesI(x), str, max);
     }
 
     public static void testPerformanceNumberOfPalindromesU(String str, int max) {
-        long palindromeCount = 0;
-        long globalStartTime = System.nanoTime();
-        for (int i = 0; i < max; ++i) {
-            palindromeCount += numberOfPalindromesU(str);
-        }
-        long globalElapsedTime = System.nanoTime() - globalStartTime;
-
-        System.out.println("palindromeCount: " + palindromeCount);
-        System.out.println("testPerformanceNumberOfPalindromesU: " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+        testPerformanceNumberOfPalindromes("testPerformanceNumberOfPalindromesU", x -> numberOfPalindromesU(x), str, max);
     }
 
 
+    //-----------------
 
     public static void bench(String benchName, String filePath, int garbageThreads, int max) throws IOException, InterruptedException {
 
@@ -339,7 +476,12 @@ public class Main {
 
         testPerformanceIsPalindromeN(words, max);
         testPerformanceIsPalindromeO(words, max);
-        testPerformanceIsPalindromeI(words, max);
+        testPerformanceIsPalindromeU(words, max);
+        testPerformanceIsPalindromeX(words, max);
+
+//        testPerformanceIsPalindromeI(words, max);
+
+
 
         for (Thread t : threads) {
             t.stop();
@@ -393,6 +535,109 @@ public class Main {
     }
 
 
+    //-----------------
+
+
+    public static String createRandomPalindrome(int size) {
+
+        Random rnd = new Random();
+        String abc = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345678";
+
+        int middle = size / 2;
+
+
+        String res = "";
+
+        for (int i = 0; i <middle; ++i) {
+            char letter = abc.charAt(rnd.nextInt(abc.length()));
+            res += letter;
+        }
+
+        if (size % 2 ==0) {
+            res += new StringBuilder(res).reverse().toString();
+        } else {
+            res += abc.charAt(rnd.nextInt(abc.length())) + new StringBuilder(res).reverse().toString();
+        }
+
+
+        return res;
+
+    }
+
+    public static ArrayList<String> createRandomPalindromes(int size, int count) {
+
+        ArrayList<String> res = new ArrayList<>();
+        for (int i = 0; i < count; ++i) {
+            res.add(createRandomPalindrome(size));
+        }
+
+        return res;
+    }
+
+    public static long testPerformanceGrowingPalindrome(String testName, Function<String, Boolean> isPalindrome, int size, int count, int max) {
+        long palindromeCount = 0;
+        long totalLocalElapsedTime = 0;
+
+        ArrayList<String> words = createRandomPalindromes(size, count);
+
+
+//        ArrayList<String> localWords = words;
+
+        long globalStartTime = System.nanoTime();
+
+        for (int i = 0; i < max; ++i) {
+
+            for (String word : words) {
+//                String localWord = cloneString(word);
+
+                long localStartTime = System.nanoTime();
+                if (isPalindrome.apply(word)) {
+                    ++palindromeCount;
+                }
+                long localElapsedTime = System.nanoTime() - localStartTime;
+                totalLocalElapsedTime += localElapsedTime;
+            }
+        }
+        long globalElapsedTime = System.nanoTime() - globalStartTime;
+
+//        System.out.println("palindromeCount: " + palindromeCount);
+//        System.out.println(testName + "(" + size + ") globalElapsedTime:     " + globalElapsedTime     + " ns - " + ((double)globalElapsedTime / 1000000000.0) + " secs.");
+//        System.out.println(testName + "(" + size + ") totalLocalElapsedTime: " + totalLocalElapsedTime + " ns - " + ((double)totalLocalElapsedTime / 1000000000.0) + " secs.");
+
+//        System.out.println(testName + "(" + size + ") totalLocalElapsedTime: " + (totalLocalElapsedTime / (max * count)) + " ns - " + palindromeCount);
+        System.out.println(size + "\t" + (totalLocalElapsedTime / (max * count)));
+        return palindromeCount;
+    }
+
+    public static void testPerformanceGrowingPalindrome(String testName, Function<String, Boolean> isPalindrome, int sizeFrom, int sizeTo, int count, int max) {
+
+        System.out.println("------------------------------------ " + testName);
+        long x = 0;
+        for (int i = sizeFrom; i <= sizeTo; ++i) {
+            x += testPerformanceGrowingPalindrome(testName, isPalindrome, i, count, max);
+        }
+        System.out.println("x: " + x);
+    }
+
+    public static void testPerformanceGrowingPalindromeN(int sizeFrom, int sizeTo, int count, int max) {
+        testPerformanceGrowingPalindrome("testPerformanceGrowingPalindromeN", x -> isPalindromeN(x), sizeFrom, sizeTo, count, max);
+    }
+
+    public static void testPerformanceGrowingPalindromeO(int sizeFrom, int sizeTo, int count, int max) {
+        testPerformanceGrowingPalindrome("testPerformanceGrowingPalindromeO", x -> isPalindromeO(x), sizeFrom, sizeTo, count, max);
+    }
+
+    public static void testPerformanceGrowingPalindromeI(int sizeFrom, int sizeTo, int count, int max) {
+        testPerformanceGrowingPalindrome("testPerformanceGrowingPalindromeI", x -> isPalindromeI(x), sizeFrom, sizeTo, count, max);
+    }
+
+    public static void testPerformanceGrowingPalindromeU(int sizeFrom, int sizeTo, int count, int max) {
+        testPerformanceGrowingPalindrome("testPerformanceGrowingPalindromeU", x -> isPalindromeU(x), sizeFrom, sizeTo, count, max);
+    }
+    //-----------------
+
+
+
     public static String getPalindrome() {
 
         // http://norvig.com/palindrome.html
@@ -436,6 +681,11 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
 
 
+//        testPerformanceGrowingPalindromeN(3, 5000, 1000, 1000);
+//        testPerformanceGrowingPalindromeO(3, 5000, 1000, 1000);
+//        testPerformanceGrowingPalindromeI(3, 5000, 1000, 1000);
+        testPerformanceGrowingPalindromeU(3, 5000, 1000, 1000);
+
 
 //        bench1();
 //        bench2();
@@ -449,7 +699,7 @@ public class Main {
 //        bench10();
 
 
-        numberOfPalindromesBench();
+//        numberOfPalindromesBench();
 
 
 //        String phrase = getPalindrome();
